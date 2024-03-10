@@ -1,26 +1,30 @@
-.App {
+.App01 {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-.App .avatar {
+.App01 .avatar {
     border-radius: 50%;
 }
 
-.App .card {
+.App01 .card {
     display: inline-flex;
     border: 1px solid black;
     border-radius: 16px;
     padding: 1rem;
 }
 
-.App .night {
+.App01 .night {
     background-color: blue;
     color: white;
 }
 
-.App .light {
+.App01 .light {
     background-color: gray;
     color: blue;
+}
+
+.App02 button {
+    margin: 1rem;
 }

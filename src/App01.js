@@ -1,9 +1,9 @@
 import './App.css';
 import { Avatar, Employees, Profile, Card, Children, ParentComponent, PackingList, List, RecipeList, Recipes, TeaSet, TeaSet02, TeaGathering, Counter } from './components/01-Describing-the-UI/index';
 
-function App() {
+function App01() {
   return (
-    <div className="App">
+    <div className="App01">
       <Profile />
     <br />
     <Avatar />
@@ -31,4 +31,4 @@ function App() {
   );
 }
 
-export default App;
+export default App01;
