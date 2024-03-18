@@ -28,3 +28,23 @@
 .App02 button {
     margin: 1rem;
 }
+
+.App03 .err {
+    color: red;
+}
+
+.App03 .counter {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #808080;
+    width: 240px;
+    height: 180px;
+}
+
+.App03 .section {
+    border: 1px solid #808080;
+    border-radius: 16px;
+    padding: 1rem;
+}

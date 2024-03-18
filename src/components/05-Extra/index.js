@@ -1,8 +1,7 @@
 // === SOME QUESTIONS === 
 
 // 1. React'te giriş değerlerini (input, textarea vs) bir durumda tutmak zorunlu mu?
-
-// React'te, girdi alanları veya textareas gibi bileşenlerin girdi değerlerini takip etmek için state kullanmak yaygın bir uygulamadır. State kullanmak kesinlikle gerekli olmasa da, state aracılığıyla girdi değerlerini yönetmek çeşitli avantajlar sağlar:
+// React'te, girdi alanları veya textarea gibi bileşenlerin girdi değerlerini takip etmek için state kullanmak yaygın bir uygulamadır. State kullanmak kesinlikle gerekli olmasa da, state aracılığıyla girdi değerlerini yönetmek çeşitli avantajlar sağlar:
 
 // Tek Doğruluk Kaynağı: Girdi değerlerini durum içinde depolayarak, değer için tek bir doğruluk kaynağı oluşturursunuz. Bu, değeri birden fazla bileşen arasında senkronize etmeyi veya girdi üzerinde doğrulama ve manipülasyon gerçekleştirmeyi kolaylaştırır.
 
@@ -13,19 +12,7 @@
 // Kolay Değişiklik: Durumda saklanan girdi değerlerini güncellemek, durum kancaları (işlevsel bileşenler için useState kancası veya sınıf bileşenleri için this.setState) tarafından sağlanan ayarlayıcı işlevleri kullanarak basittir.
 
 
-
-// 2. setSometing() fonksiyonu için bir bakış açısı
-
-// React'te useState kancasını kullandığınızda, useState tarafından döndürülen işlev (bu durumda setSomething), yeni bir değer veya bir işlevle çağrılabilen bir işlevdir.
-
-// setSomething(newValue) gibi doğrudan yeni bir değerle setSomething'ı çağırdığınızda, React basitçe durumu bu yeni değere ayarlar. Geçtiğiniz argüman (newValue) yeni state değeri olur. Örneğin: setSomething(10) durumu 10 olarak ayarlar.
-
-// setSomething'ı setSomething(prevValue => prevValue + 1) gibi bir fonksiyonla çağırdığınızda, React bu fonksiyonu argüman olarak önceki durum değeriyle çağırır. Bu durumda, prevValue (veya yaygın olarak adlandırıldığı gibi n) önceki durum değerini temsil eder. Bu fonksiyonun geri dönüş değeri yeni durum değeri olur. Örneğin: mevcut durum 5 ise, setSomething(prevValue => prevValue + 1) durumu 6 olarak ayarlar.
-
-// Bu nedenle, setSomething(n => n + 1) kullanıldığında, n geçerli durum değerini değil, önceki durum değerini temsil eder. Bu, durum güncellemeleri asenkron veya toplu olsa bile React'in her zaman en güncel durum değeri üzerinde çalışmasını sağlar.
-
-
-// 3. Olay işleyici fonksiyonları bileşenin neresinde bildirilmeli?
+// 2. Olay işleyici fonksiyonları bileşenin neresinde bildirilmeli?
 // React uygulamalarında performans ve organizasyon göz önünde bulundurulduğunda, genellikle olay işleyici işlevlerini bileşeninizin dönüş kısmının (JSX) dışında, bileşen içinde yerel işlevler veya bir sınıf bileşeninin yöntemleri olarak bildirmeniz önerilir.
 
 // Olay işleyici işlevlerini geri dönüş kısmının dışında bildirmenin faydalı olmasının bazı nedenleri şunlardır:
@@ -38,54 +25,40 @@
 // Yeniden kullanım: Olay işleyicilerini yerel işlevler olarak bildirmek, bunları bileşen içinde kolayca yeniden kullanmanıza veya alt bileşenlere prop olarak aktarmanıza olanak tanır. Bu, kodun yeniden kullanımını teşvik eder ve kod tabanınızı daha modüler hale getirir.
 
 
-// 4. React neden form öğelerinin değişmesine state setterları dışıında izin vermez?
-// Girdilerin içindeki metni değiştirememenizin nedeni, girdilerin state kişisine bağlı olarak sabit değerlere sahip olacak şekilde ayarlanmış olmasıdır. React'te, sabit değerlere sahip girdiler kontrollü bileşenler olarak kabul edilir. Kontrollü bileşenler değerlerini durumdan alırlar ve kullanıcının kullanıcı girişi yoluyla değeri doğrudan değiştirmesine izin vermezler.
+// 3. Neden her "değişebilen" değişken için state kullanılmaz?
 
-// Girdileri düzenlenebilir hale getirmek için, kullanıcı girdileri yazdığında durum kişisini güncellemeniz gerekir. Bunu, girdi değerleri her değiştiğinde durumu güncelleyecek olan onChange olay işleyicilerini girdilere ekleyerek başarabilirsiniz.
+import { useState } from 'react';
 
-// Girdilerin içindeki metni doğrudan değiştirememenizin nedeni, React'in form girdilerini işleme biçimidir. React tek yönlü bir veri akışını zorunlu kılar, bu da verilerin (durum) tek yönde aktığı anlamına gelir: durumdan kullanıcı arayüzü öğelerine. Bu, "tek doğruluk kaynağı" ilkesi olarak bilinir.
+let nextId = 0;
 
-// Bu, girdileri React'te kontrollü bileşenler haline getirir. Kontrollü bileşenler değerlerini durumdan alır ve onChange olayları aracılığıyla günceller.
+export default function List() {
+  const [name, setName] = useState('');
+  const [artists, setArtists] = useState([]);
 
-// Dolayısıyla, giriş alanlarının içine yazmaya çalıştığınızda, giriş değerleri state tarafından kontrol edildiği için React buna izin vermez. Kullanıcı girişine izin vermek istiyorsanız, onChange olayını ele almanız ve sağladığım güncellenmiş kodda gösterildiği gibi durumu buna göre güncellemeniz gerekir.
-
-// Bu yaklaşım, React'in girdilerin durumu üzerinde kontrol sahibi olmasını ve kullanıcı arayüzü ile altta yatan veriler arasında tutarlılık olmasını sağlar. Ayrıca form verilerini yönetmeyi ve form durumuna göre doğrulama veya koşullu işleme gibi özellikleri uygulamayı kolaylaştırır.
-
-
-// 5. Neden her "değişebilen" değişkenler için state kullanılmaz?
-
-// import { useState } from 'react';
-
-// let nextId = 0;
-
-// export default function List() {
-//   const [name, setName] = useState('');
-//   const [artists, setArtists] = useState([]);
-
-//   return (
-//     <>
-//       <h1>Inspiring sculptors:</h1>
-//       <input
-//         value={name}
-//         onChange={e => setName(e.target.value)}
-//       />
-//       <button onClick={() => {
-//         setArtists([
-//           ...artists,
-//           {
-//             id: nextId++,
-//             name: name
-//           }
-//         ])
-//       }}>Add</button>
-//       <ul>
-//         {artists.map(artist => (
-//           <li key={artist.id}>{artist.name}</li>
-//         ))}
-//       </ul>
-//     </>
-//   );
-// }
+  return (
+    <>
+      <h1>Inspiring sculptors:</h1>
+      <input
+        value={name}
+        onChange={e => setName(e.target.value)}
+      />
+      <button onClick={() => {
+        setArtists([
+          ...artists,
+          {
+            id: nextId++,
+            name: name
+          }
+        ])
+      }}>Add</button>
+      <ul>
+        {artists.map(artist => (
+          <li key={artist.id}>{artist.name}</li>
+        ))}
+      </ul>
+    </>
+  );
+}
 
 // React'te state, zaman içinde değişen ve bileşenin render'ını etkileyen verileri yönetmek için kullanılmalıdır. 
 
@@ -101,7 +74,7 @@
 // Özetle, zaman içinde değişen verileri yönetmek için genellikle state kullanılması önerilse de, nextId'de olduğu gibi basitlik ve performans nedenleriyle yerel bir değişken kullanmanın daha uygun olabileceği senaryolar vardır. Yazılım geliştirmedeki birçok kararda olduğu gibi, sonuçta bu, uygulamanızın özel gereksinimlerine ve kısıtlamalarına bağlıdır.
 
 
-// 6. Shallow Copy Nedir? Programlamada kopyalama çeşitleri.
+// 4. Shallow Copy Nedir? Programlamada kopyalama çeşitleri.
 // Programlamada, yüzeysel kopyalama, iç içe geçmiş tüm nesneleri özyinelemeli olarak kopyalamak yerine, bir nesnenin yalnızca doğrudan özelliklerinin kopyalandığı bir kopyalama türüdür. Bu, üst düzey yapı kopyalanırken, orijinal nesne içindeki tüm iç içe geçmiş nesnelerin kopyalanan nesnede hala referans alındığı anlamına gelir.
 
 // Genel olarak iki tür kopyalama mekanizması vardır:
@@ -143,3 +116,24 @@ const original = {
 // Bu örnekte, sığ kopyadaki iç içe geçmiş b nesnesinde yapılan değişiklikler hem orijinali hem de kopyayı etkilerken, derin kopyadaki iç içe geçmiş nesnede yapılan değişiklikler yalnızca kopyayı etkiler.
 
 // Bu kopyalama mekanizmaları farklı amaçlara hizmet eder ve uygulamanızın gereksinimlerine ve verilerinizin yapısına göre seçilmelidir.
+
+
+// 5. React State'de kompleks veri tipleri ile çalışırken dikkat edilmesi gereken hususlar
+
+// React state'te karmaşık veri türleriyle (nesneler veya diziler gibi) çalışırken, beklenmedik davranışlardan kaçınmak için state güncellemelerinin nasıl çalıştığını anlamak önemlidir. Bu konuyu daha derinlemesine inceleyelim:
+
+// React'te Durum Güncellemeleri:
+// React'te durum güncellemeleri genellikle eski durumun yenisiyle değiştirilmesiyle gerçekleştirilir. Bu, setter işlevini yeni bir değerle çağırdığınızda, React'in herhangi bir değişiklik olup olmadığını belirlemek için yeni değeri önceki durumla karşılaştırdığı anlamına gelir. Bir fark varsa, React bileşeni güncellenmiş durumla yeniden oluşturacaktır.
+// setState'in yeni durumu bir önceki durumla birleştirdiği sınıf bileşenlerinin aksine, işlevsel bileşenlerdeki setter işlevi eski durumu tamamen yenisiyle değiştirir.
+
+// Karmaşık Veri Türlerini İşleme:
+// Nesneler veya diziler gibi karmaşık veri türleriyle çalışırken, durumu değişmez bir şekilde güncellediğinizden emin olmanız çok önemlidir. React, referansları karşılaştırarak değişiklikleri tespit etmeye dayandığından, durumu doğrudan değiştirmek beklenmedik davranışlara yol açabilir.
+// Karmaşık state'i doğru şekilde güncellemek için, genellikle güncellenmiş değerlerle yeni bir nesne veya dizi oluşturur ve ardından bunu setter işlevine geçirirsiniz. Bu, React'in değişikliği algılamasını ve buna göre yeniden oluşturmayı tetiklemesini sağlar.
+
+// Setter İşlev Davranışı:
+// Setter fonksiyonunu yeni bir değerle çağırdığınızda, React referansları karşılaştırarak yeni değerin önceki durumdan farklı olup olmadığını belirler.
+// Yeni değer önceki durumdan farklı bir referansa sahipse, React bunu bir durum güncellemesi olarak değerlendirir ve bileşenin yeniden render edilmesini planlar.
+// Bu nedenle, yeni değer önceki durumla aynı içeriğe sahip olsa ancak farklı bir referansa sahip olsa bile (değişmezlik nedeniyle), React değişiklikleri yansıtmak için bileşeni yeniden oluşturacaktır.
+// Özünde, karmaşık veri türleriyle çalışırken, güncellenmiş değerlerle yeni nesneler veya diziler oluşturarak durumu değişmez bir şekilde güncellemek çok önemlidir. Bu, React'in durum değişikliklerini doğru bir şekilde algılamasını ve gerekli yeniden render işlemlerini tetiklemesini sağlar. Setter fonksiyonu, bir durum güncellemesinin gerçekleşip gerçekleşmeyeceğini belirlemek için referansları karşılaştırarak yeni değeri işler.
+
+
