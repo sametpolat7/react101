@@ -30,6 +30,6 @@ root.render(
 )
 ```
 
-**Yazar:**[ Samet Polat](https://www.linkedin.com/in/sametpolat17/)
+**Yazar:**[ Samet Polat](https://www.linkedin.com/in/sametpolat7/)
 
 
